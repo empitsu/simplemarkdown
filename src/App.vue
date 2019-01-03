@@ -16,20 +16,24 @@ export default {
   name: "App",
   data() {
     return {
-      isLogin: false,
-      userData: null
+      isLogin: false
     };
+  },
+  computed: {
+    userData() {
+      return this.$store.state.userData;
+    }
   },
   created() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         // User is signed in.
         this.isLogin = true;
-        this.userData = user;
+        this.$store.commit("setUserData", user);
       } else {
         // User is signed out.
         this.isLogin = false;
-        this.userData = null;
+        this.$store.commit("setUserData", null);
       }
     });
   },
