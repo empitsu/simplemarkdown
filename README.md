@@ -1,5 +1,9 @@
 # simplemarkdown
 
+# Note
+
+This application is made with reference to the book [Vue.jsとFirebaseで作るミニWebサービス](https://nextpublishing.jp/book/9884.html).  
+
 ## Project setup
 ```
 npm install
