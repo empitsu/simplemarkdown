@@ -12,6 +12,7 @@
         </ul>
         <button class="addMemoBtn" @click="onClickAddBtn">メモの追加</button>
         <button class="deleteMemoBtn" v-if="memos.length > 1" @click="onClickDeleteBtn">選択中のメモの削除</button>
+        <button class="saveMemoBtn" @click="onClickSaveBtn">メモの保存</button>
       </div>
       <textarea class="markdown" v-model="memos[selectedIndex].markdown"></textarea>
       <div class="preview" v-html="preview()"></div>
@@ -33,6 +34,29 @@ export default {
       selectedIndex: 0
     };
   },
+  created() {
+    firebase
+      .firestore()
+      .collection("memos")
+      .doc(this.user.uid)
+      .get()
+      .then(doc => {
+        if (doc.exists && doc.data().memos) {
+          this.memos = doc.data().memos;
+        }
+      });
+  },
+  mounted() {
+    document.onkeydown = e => {
+      if (e.key == "s" && (e.metaKey || e.ctrlKey)) {
+        this.onClickSaveBtn();
+        return false;
+      }
+    };
+  },
+  beforeDestroy() {
+    document.onkeydown = null;
+  },
   methods: {
     onClickLogoutBtn() {
       firebase.auth().signOut();
@@ -48,6 +72,19 @@ export default {
       if (this.selectedIndex > 0) {
         this.selectedIndex--;
       }
+    },
+    onClickSaveBtn() {
+      // Initialize Cloud Firestore through Firebase
+      var db = firebase.firestore();
+      db.collection("memos")
+        .doc(this.user.uid)
+        .set({ memos: this.memos })
+        .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
     },
     preview() {
       return marked(this.memos[this.selectedIndex].markdown);
@@ -91,6 +128,9 @@ export default {
 }
 .addMemoBtn {
   margin-top: 20px;
+}
+.deleteMemoBtn {
+  margin: 10px;
 }
 .markdown {
   width: 40%;
