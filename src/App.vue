@@ -5,8 +5,10 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
+    <v-app>
     <MyHome v-if="!isLogin"></MyHome>
     <MyEditor v-if="isLogin" :user="userData"></MyEditor>
+    </v-app>
   </div>
 </template>
 <script>

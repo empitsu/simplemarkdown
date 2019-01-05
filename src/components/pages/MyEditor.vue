@@ -10,7 +10,7 @@
             <p class="memoTitle">{{ displayTitle(memo.markdown) }}</p>
           </li>
         </ul>
-        <button class="addMemoBtn" @click="onClickAddBtn">メモの追加</button>
+        <v-btn depressed small color="primary" class="addMemoBtn" @click="onClickAddBtn">メモの追加</v-btn>
         <button class="deleteMemoBtn" v-if="memos.length > 1" @click="onClickDeleteBtn">選択中のメモの削除</button>
         <button class="saveMemoBtn" @click="onClickSaveBtn">メモの保存</button>
       </div>
