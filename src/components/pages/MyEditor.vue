@@ -5,22 +5,36 @@
     <button @click="onClickLogoutBtn">ログアウト</button>
     <div class="editorWrapper">
       <div class="memoListWrapper">
-        <ul>
-          <li class="memoList" v-for="(memo, index) in memos" :key="index" @click="onClickMemo(index)" :data-selected="index==selectedIndex">
-            <p class="memoTitle">{{ displayTitle(memo.markdown) }}</p>
-          </li>
-        </ul>
+        <v-list two-line>
+          <template v-for="(memo, index) in memos"  >
+            <v-list-tile
+                avatar
+                ripple
+                :key="index"
+                @click="onClickMemo(index)"
+                :data-selected="index==selectedIndex"
+                class="memo-list-tile"
+              >
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ displayTitle(memo.markdown) }}</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+            <v-divider
+                v-if="index + 1 < memos.length"
+                :key="index"
+            ></v-divider>
+          </template>
+        </v-list>
         <v-btn depressed small color="primary" class="addMemoBtn" @click="onClickAddBtn">メモの追加</v-btn>
         <button class="deleteMemoBtn" v-if="memos.length > 1" @click="onClickDeleteBtn">選択中のメモの削除</button>
         <button class="saveMemoBtn" @click="onClickSaveBtn">メモの保存</button>
       </div>
-      <textarea class="markdown" v-model="memos[selectedIndex].markdown"></textarea>
-      <div class="preview markdown-body" v-html="preview()"></div>
+      <MyMemo :memo="this.memos[this.selectedIndex]"></MyMemo>
     </div>
   </div>
 </template>
 <script>
-import marked from "marked";
+import MyMemo from "./Memo.vue";
 export default {
   name: "MyEditor",
   props: ["user"],
@@ -33,6 +47,9 @@ export default {
       ],
       selectedIndex: 0
     };
+  },
+  components: {
+    MyMemo: MyMemo
   },
   created() {
     firebase
@@ -86,9 +103,7 @@ export default {
           console.error("Error adding document: ", error);
         });
     },
-    preview() {
-      return marked(this.memos[this.selectedIndex].markdown);
-    },
+
     displayTitle(text) {
       return text.split(/\n/)[0];
     }
@@ -106,20 +121,14 @@ export default {
 }
 .memoListWrapper {
   width: 20%;
-  border-top: 1px solid #000;
 }
-.memoList {
-  padding: 10px;
-  box-sizing: border-box;
-  text-align: left;
-  border-bottom: 1px solid #000;
-  &:nth-child(event) {
-    background-color: #ccc;
-  }
-  &[data-selected="true"] {
-    background-color: #ccf;
+.memo-list-tile {
+  baxckground: #000;
+  > [data-selected="true"] {
+    background: rgba(0, 0, 0, 0.04);
   }
 }
+
 .memoTitle {
   height: 1.5em;
   margin: 0;
@@ -131,13 +140,5 @@ export default {
 }
 .deleteMemoBtn {
   margin: 10px;
-}
-.markdown {
-  width: 40%;
-  height: 500px;
-}
-.preview {
-  width: 40%;
-  text-align: left;
 }
 </style>

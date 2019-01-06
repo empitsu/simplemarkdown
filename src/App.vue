@@ -6,8 +6,8 @@
     </div>
     <router-view/>
     <v-app>
-    <MyHome v-if="!isLogin"></MyHome>
-    <MyEditor v-if="isLogin" :user="userData"></MyEditor>
+      <MyHome v-if="!isLogin"></MyHome>
+      <MyEditor v-if="isLogin" :user="userData"></MyEditor>
     </v-app>
   </div>
 </template>
