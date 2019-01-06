@@ -18,6 +18,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+#memoDetail {
+  width: 100%;
+  display: flex;
+}
 .markdown {
   width: 40%;
   height: 500px;

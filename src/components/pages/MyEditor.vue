@@ -124,7 +124,7 @@ export default {
 }
 .memo-list-tile {
   baxckground: #000;
-  > [data-selected="true"] {
+  /deep/ [data-selected="true"] {
     background: rgba(0, 0, 0, 0.04);
   }
 }
