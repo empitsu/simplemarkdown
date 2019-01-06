@@ -10,7 +10,7 @@
             <v-list-tile
                 avatar
                 ripple
-                :key="index"
+                :key="memo.markdown"
                 @click="onClickMemo(index)"
                 :data-selected="index==selectedIndex"
                 class="memo-list-tile"
@@ -114,7 +114,6 @@ export default {
 .editorWrapper {
   display: flex;
 }
-
 .memoWrapper {
   width: 20%;
   border-top: 1px solid #000;
@@ -123,7 +122,6 @@ export default {
   width: 20%;
 }
 .memo-list-tile {
-  baxckground: #000;
   /deep/ [data-selected="true"] {
     background: rgba(0, 0, 0, 0.04);
   }
