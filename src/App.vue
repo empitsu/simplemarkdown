@@ -1,51 +1,10 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
     <v-app>
-      <MyHome v-if="!isLogin"></MyHome>
-      <MyEditor v-if="isLogin" :user="userData"></MyEditor>
+      <router-view/>
     </v-app>
   </div>
 </template>
-<script>
-import MyHome from "./components/pages/MyHome.vue";
-import MyEditor from "./components/pages/MyEditor.vue";
-export default {
-  name: "App",
-  data() {
-    return {
-      isLogin: false
-    };
-  },
-  computed: {
-    userData() {
-      return this.$store.state.userData;
-    }
-  },
-  created() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        // User is signed in.
-        this.isLogin = true;
-        this.$store.commit("setUserData", user);
-      } else {
-        // User is signed out.
-        this.isLogin = false;
-        this.$store.commit("setUserData", null);
-      }
-    });
-  },
-  components: {
-    MyHome: MyHome,
-    MyEditor: MyEditor
-  }
-};
-</script>
-
 
 <style lang="scss">
 #app {
