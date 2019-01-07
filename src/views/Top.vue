@@ -1,9 +1,9 @@
 <template>
-<div id="top">
-  <MyHome v-if="!isLogin"></MyHome>
-  <MyEditor v-if="isLogin" :user="userData"></MyEditor>
-  <router-link :to="{ name: 'terms' }">Terms of Use</router-link>
-</div>
+  <div id="top">
+    <MyHome v-if="!isLogin"></MyHome>
+    <MyEditor v-if="isLogin" :user="userData"></MyEditor>
+    <router-link :to="{ name: 'terms' }">Terms of Use</router-link>
+  </div>
 </template>
 <script>
 import MyHome from "../components/pages/MyHome.vue";
