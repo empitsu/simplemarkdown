@@ -4,8 +4,14 @@
     Somehow it doesn't work when memoObj's initial value is set from props passed from above.
     <v-textarea class="markdown" v-model="memoObj.markdown"></v-textarea> 
     -->
-  <v-textarea class="markdown" v-model="markdown"></v-textarea>
-  <div class="preview markdown-body" v-html="preview()"></div>
+  <div class="textarea-wrap">
+    <p class="textarea-head">textarea</p>
+    <v-textarea box height="500px" class="markdown" v-model="markdown"></v-textarea>
+  </div>
+  <div class="preview-wrap">
+    <p class="preview-head">preview</p>
+    <div class="preview markdown-body" v-html="preview()"></div>
+  </div>
 </div>
 </template>
 <script>
@@ -30,7 +36,6 @@ export default {
         return this.memo.markdown;
       },
       set(value) {
-        console.log("set", value);
         this.$store.commit("updateMarkdown", {
           value: value,
           index: parseInt(this.$route.params.memoId, 10)
@@ -50,12 +55,17 @@ export default {
   width: 100%;
   display: flex;
 }
-.markdown {
-  width: 40%;
-  height: 500px;
+.textarea-head {
+  text-align: center;
 }
-.preview {
-  width: 40%;
+.textarea-wrap {
+  width: 50%;
+}
+.preview-head {
+  text-align: center;
+}
+.preview-wrap {
+  width: 50%;
   text-align: left;
 }
 </style>

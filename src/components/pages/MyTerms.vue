@@ -1,8 +1,9 @@
 <template>
 <div id="terms">
-  <h1>利用規約</h1>
-  <p>ここに利用規約の文章が入ります。</p>
-  <router-link :to="{ name: 'top' }">TOPに戻る</router-link>
+  <h1>Terms of Use</h1>
+  <p>texttexttexttext</p>
+  <!--somehow when use {name:'top'}, it doesn't work well.-->
+  <router-link :to="{path:'/'}">back to Top</router-link>
 </div>
 </template>
 

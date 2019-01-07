@@ -1,8 +1,17 @@
 <template>
   <div id="editor">
-    <h1>Edit</h1>
-    <p>{{ user.displayName }}</p>
-    <v-btn depressed small color="info" @click="onClickLogoutBtn">Logout</v-btn>
+    <header class="header">
+      <h1>Simple Markdown</h1>
+      <ul class="header__nav">
+        <li class="header__nav-item"><p>{{ user.displayName }}</p></li>
+        <li class="header__nav-item"><v-btn depressed small @click="onClickLogoutBtn">Logout</v-btn></li>
+      </ul>
+    </header>
+    <ul class="memolist-menu">
+      <li class="memolist-menu__item"><v-btn depressed small color="primary" class="addMemoBtn" @click="onClickAddBtn">Add</v-btn></li>
+      <li class="memolist-menu__item"><v-btn depressed small color="warning" class="deleteMemoBtn" v-if="memos.length > 1" @click="onClickDeleteBtn">Delete</v-btn></li>
+      <li class="memolist-menu__item"><v-btn depressed small color="success" class="saveMemoBtn" @click="onClickSaveBtn">Save</v-btn></li>
+  </ul>
     <div class="editorWrapper">
       <div class="memoListWrapper">
         <v-list two-line>
@@ -25,9 +34,7 @@
             ></v-divider>
           </template>
         </v-list>
-        <v-btn depressed small color="primary" class="addMemoBtn" @click="onClickAddBtn">Add</v-btn>
-        <v-btn depressed small color="warning" class="deleteMemoBtn" v-if="memos.length > 1" @click="onClickDeleteBtn">Delete</v-btn>
-        <v-btn depressed small color="success" class="saveMemoBtn" @click="onClickSaveBtn">Save</v-btn>
+
       </div>
       <MyMemo></MyMemo>
     </div>
@@ -148,6 +155,27 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.header {
+  display: flex;
+  justify-content: space-between;
+  &__nav {
+    display: flex;
+    align-items: center;
+  }
+  &__nav-item {
+    list-style: none;
+    > p {
+      margin-bottom: 0;
+    }
+  }
+}
+.memolist-menu {
+  display: flex;
+  align-items: center;
+  &__item {
+    list-style: none;
+  }
+}
 .editorWrapper {
   display: flex;
 }
@@ -171,7 +199,7 @@ export default {
   overflow: hidden;
 }
 .addMemoBtn {
-  margin-top: 20px;
+  // margin-top: 20px;
 }
 .deleteMemoBtn {
   margin: 10px;

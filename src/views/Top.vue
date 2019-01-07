@@ -24,7 +24,7 @@ export default {
         console.log("User is signed in.");
         this.isLogin = true;
         this.$store.commit("setUserData", user);
-        // /memos/1でアクセスするとmemo/0に飛んでしまうので、MyHomeでpush
+        // this code moved to MyHome.vue Becase when I access this app by /memos/1 on the browser, it redirects to memo/0.
         //this.$router.push({ name: "memo", params: { memoId: 0 } });
       } else {
         // User is signed out.

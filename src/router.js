@@ -2,7 +2,6 @@ import Vue from "vue";
 import Router from "vue-router";
 import Top from "./views/Top.vue";
 import MyTerms from "./components/pages/MyTerms.vue";
-// import Memo from "./components/pages/Memo.vue";
 import MyEditor from "./components/pages/MyEditor.vue";
 import MyHome from "./components/pages/MyHome.vue";
 Vue.use(Router);
