@@ -29,35 +29,28 @@
         <v-btn depressed small color="warning" class="deleteMemoBtn" v-if="memos.length > 1" @click="onClickDeleteBtn">Delete</v-btn>
         <v-btn depressed small color="success" class="saveMemoBtn" @click="onClickSaveBtn">Save</v-btn>
       </div>
-      <MyMemo :memo="this.memos[this.selectedIndex]"></MyMemo>
+      <!-- <MyMemo :memo="this.memos[this.selectedIndex]"></MyMemo> -->
       <router-view/>
     </div>
   </div>
 </template>
 <script>
-import MyMemo from "./Memo.vue";
+// import MyMemo from "./Memo.vue";
 export default {
   name: "MyEditor",
   props: ["user"],
   data() {
     return {
-      memos: [
-        {
-          markdown: ""
-        }
-      ],
       selectedIndex: 0
     };
   },
   computed: {
-    selectedIndex() {
-      console.log("selectedIndex");
-      console.log((this.$router.params && this.$router.params.memoId) || 0);
-      return (this.$router.params && this.$router.params.memoId) || 0;
+    memos() {
+      return this.$store.state.memos;
     }
   },
   components: {
-    MyMemo: MyMemo
+    // MyMemo: MyMemo
   },
   watch: {
     $route(to, from) {
@@ -82,8 +75,11 @@ export default {
       .then(doc => {
         if (doc.exists && doc.data().memos) {
           console.log("get firestroe memos");
-          this.memos = doc.data().memos;
-          this.$router.push({ name: "memo", params: { memoId: 0 } });
+          this.$store.commit("setMemos", doc.data().memos);
+          this.$router.push({
+            name: "memo",
+            params: { memoId: this.selectedIndex }
+          });
         }
       });
   },
@@ -107,12 +103,10 @@ export default {
     },
     onClickMemo(index) {
       this.$router.push({ name: "memo", params: { memoId: index } });
-      // this.selectedIndex = index;
     },
     onClickDeleteBtn() {
       this.memos.splice(this.selectedIndex, 1);
       if (this.selectedIndex > 0) {
-        // this.selectedIndex--;
         this.$router.push({
           name: "memo",
           params: { memoId: this.selectedIndex - 1 }
@@ -126,7 +120,7 @@ export default {
         .doc(this.user.uid)
         .set({ memos: this.memos })
         .then(function(docRef) {
-          console.log("Document written with ID: ", docRef.id);
+          console.log("Document written with ID: ", docRef);
         })
         .catch(function(error) {
           console.error("Error adding document: ", error);

@@ -4,7 +4,7 @@
     somehow it doesn't work
     <v-textarea class="markdown" v-model="memoObj.markdown"></v-textarea> 
     -->
-  <v-textarea class="markdown" v-model="memo.markdown"></v-textarea>
+  <v-textarea class="markdown" v-model="markdown"></v-textarea>
   <div class="preview markdown-body" v-html="preview()"></div>
 </div>
 </template>
@@ -13,25 +13,32 @@ import marked from "marked";
 
 export default {
   name: "MyMemo",
-  props: ["memo"],
-  data() {
-    return {
-      memoObj: this.memo
-    };
-  },
-  mounted() {
-    console.log(`mounted`);
-    console.log(this.memo.markdown);
-    console.log(this.memoObj.markdown);
-  },
-  updated() {
-    console.log(`updated`);
-    console.log(this.memo.markdown);
-    console.log(this.memoObj.markdown);
+  // props: ["memo"],
+  // data() {
+  //   return {
+  //     memoObj: this.memo
+  //   };
+  // },
+  computed: {
+    memo() {
+      return this.$store.state.memos[parseInt(this.$route.params.memoId, 10)];
+    },
+    markdown: {
+      get() {
+        return this.memo.markdown;
+      },
+      set(value) {
+        console.log("set", value);
+        this.$store.commit("updateMarkdown", {
+          value: value,
+          index: parseInt(this.$route.params.memoId, 10)
+        });
+      }
+    }
   },
   methods: {
     preview() {
-      return marked(this.memo.markdown);
+      return marked(this.markdown);
     }
   }
 };
