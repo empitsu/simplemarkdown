@@ -1,6 +1,9 @@
 <template>
 <div id="memoDetail">
-  <v-textarea class="markdown" v-model="memoObj.markdown"></v-textarea>
+  <!-- 
+    somehow it doesn't work
+    <v-textarea class="markdown" v-model="memoObj.markdown"></v-textarea> 
+    -->
   <v-textarea class="markdown" v-model="memo.markdown"></v-textarea>
   <div class="preview markdown-body" v-html="preview()"></div>
 </div>

@@ -1,8 +1,8 @@
 <template>
   <div id="editor">
-    <h1>編集画面</h1>
+    <h1>Edit</h1>
     <p>{{ user.displayName }}</p>
-    <button @click="onClickLogoutBtn">ログアウト</button>
+    <v-btn depressed small color="info" @click="onClickLogoutBtn">Logout</v-btn>
     <div class="editorWrapper">
       <div class="memoListWrapper">
         <v-list two-line>
@@ -10,7 +10,7 @@
             <v-list-tile
                 avatar
                 ripple
-                :key="memo.markdown"
+                :key="`title${index}`"
                 @click="onClickMemo(index)"
                 :data-selected="index==selectedIndex"
                 class="memo-list-tile"
@@ -25,11 +25,12 @@
             ></v-divider>
           </template>
         </v-list>
-        <v-btn depressed small color="primary" class="addMemoBtn" @click="onClickAddBtn">メモの追加</v-btn>
-        <button class="deleteMemoBtn" v-if="memos.length > 1" @click="onClickDeleteBtn">選択中のメモの削除</button>
-        <button class="saveMemoBtn" @click="onClickSaveBtn">メモの保存</button>
+        <v-btn depressed small color="primary" class="addMemoBtn" @click="onClickAddBtn">Add</v-btn>
+        <v-btn depressed small color="warning" class="deleteMemoBtn" v-if="memos.length > 1" @click="onClickDeleteBtn">Delete</v-btn>
+        <v-btn depressed small color="success" class="saveMemoBtn" @click="onClickSaveBtn">Save</v-btn>
       </div>
       <MyMemo :memo="this.memos[this.selectedIndex]"></MyMemo>
+      <router-view/>
     </div>
   </div>
 </template>
@@ -48,8 +49,29 @@ export default {
       selectedIndex: 0
     };
   },
+  computed: {
+    selectedIndex() {
+      console.log("selectedIndex");
+      console.log((this.$router.params && this.$router.params.memoId) || 0);
+      return (this.$router.params && this.$router.params.memoId) || 0;
+    }
+  },
   components: {
     MyMemo: MyMemo
+  },
+  watch: {
+    $route(to, from) {
+      console.log("watch route", to, from);
+      this.selectedIndex = (to.params && to.params.memoId) || 0;
+    }
+  },
+  beforeRouteUpdate(to, from, next) {
+    // somehow it isn't called on router.push()!
+    console.log("beforeRouteUpdate");
+    // ルート変更に反応する...
+    // next() を呼び出すのを忘れないでください
+    this.selectedIndex = (to.params && to.memoId) || 0;
+    next();
   },
   created() {
     firebase
@@ -59,7 +81,9 @@ export default {
       .get()
       .then(doc => {
         if (doc.exists && doc.data().memos) {
+          console.log("get firestroe memos");
           this.memos = doc.data().memos;
+          this.$router.push({ name: "memo", params: { memoId: 0 } });
         }
       });
   },
@@ -79,15 +103,20 @@ export default {
       firebase.auth().signOut();
     },
     onClickAddBtn() {
-      this.memos.push({ markdown: "無題のメモ" });
+      this.memos.push({ markdown: "untitled" });
     },
     onClickMemo(index) {
-      this.selectedIndex = index;
+      this.$router.push({ name: "memo", params: { memoId: index } });
+      // this.selectedIndex = index;
     },
     onClickDeleteBtn() {
       this.memos.splice(this.selectedIndex, 1);
       if (this.selectedIndex > 0) {
-        this.selectedIndex--;
+        // this.selectedIndex--;
+        this.$router.push({
+          name: "memo",
+          params: { memoId: this.selectedIndex - 1 }
+        });
       }
     },
     onClickSaveBtn() {

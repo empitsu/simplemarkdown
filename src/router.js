@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Top from "./views/Top.vue";
 import MyTerms from "./components/pages/MyTerms.vue";
+import Memo from "./components/pages/Memo.vue";
 
 Vue.use(Router);
 
@@ -12,7 +13,14 @@ export default new Router({
     {
       path: "/",
       name: "top",
-      component: Top
+      component: Top,
+      children: [
+        {
+          name: "memo",
+          path: "memos/:memoId",
+          component: Memo
+        }
+      ]
     },
     {
       path: "/terms",

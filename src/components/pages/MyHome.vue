@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <h1>simple markdown</h1>
-    <button @click="onClickLoginBtn">Googleアカウントでログイン</button>
+    <v-btn depressed color="primary" @click="onClickLoginBtn">Log in via Google</v-btn>
   </div>
 </template>
 <script>
