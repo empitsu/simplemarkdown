@@ -27,8 +27,9 @@ export default {
   // },
   computed: {
     memo() {
-      // vue.runtime.esm.js?2b0e:601 [Vue warn]: Error in render: "TypeError: Cannot read property 'markdown' of undefined" occurs when initial params - memoId -  is not "0".
+      // [only development enviroment] vue.runtime.esm.js?2b0e:601 [Vue warn]: Error in render: "TypeError: Cannot read property 'markdown' of undefined" occurs when initial params - memoId -  is not "0".
       // because array which is default value of memos in store has only one object.
+      // => somehow the error disappeared after I rebuild it.
       return this.$store.state.memos[parseInt(this.$route.params.memoId, 10)];
     },
     markdown: {
@@ -67,5 +68,8 @@ export default {
 .preview-wrap {
   width: 50%;
   text-align: left;
+}
+.preview {
+  padding: 1rem;
 }
 </style>
