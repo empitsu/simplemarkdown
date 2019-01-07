@@ -1,7 +1,7 @@
 <template>
 <div id="memoDetail">
   <!-- 
-    somehow it doesn't work
+    Somehow it doesn't work when memoObj's initial value is set from props passed from above.
     <v-textarea class="markdown" v-model="memoObj.markdown"></v-textarea> 
     -->
   <v-textarea class="markdown" v-model="markdown"></v-textarea>
@@ -21,6 +21,8 @@ export default {
   // },
   computed: {
     memo() {
+      // vue.runtime.esm.js?2b0e:601 [Vue warn]: Error in render: "TypeError: Cannot read property 'markdown' of undefined" occurs when initial params - memoId -  is not "0".
+      // because array which is default value of memos in store has only one object.
       return this.$store.state.memos[parseInt(this.$route.params.memoId, 10)];
     },
     markdown: {

@@ -18,7 +18,7 @@ export default {
       firebase
         .auth()
         .signInWithPopup(provider)
-        .then(function(result) {
+        .then(result => {
           // This gives you a Google Access Token. You can use it to access the Google API.
           var token = result.credential.accessToken;
           // The signed-in user info.
@@ -26,8 +26,9 @@ export default {
           var user = result.user;
           console.log(`token${token}`);
           // ...
+          this.$router.push({ name: "memo", params: { memoId: 0 } });
         })
-        .catch(function(error) {
+        .catch(error => {
           // Handle Errors here.
           // eslint-disable-next-line
           var errorCode = error.code;

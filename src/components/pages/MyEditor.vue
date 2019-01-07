@@ -29,16 +29,14 @@
         <v-btn depressed small color="warning" class="deleteMemoBtn" v-if="memos.length > 1" @click="onClickDeleteBtn">Delete</v-btn>
         <v-btn depressed small color="success" class="saveMemoBtn" @click="onClickSaveBtn">Save</v-btn>
       </div>
-      <!-- <MyMemo :memo="this.memos[this.selectedIndex]"></MyMemo> -->
-      <router-view/>
+      <MyMemo></MyMemo>
     </div>
   </div>
 </template>
 <script>
-// import MyMemo from "./Memo.vue";
+import MyMemo from "./Memo.vue";
 export default {
   name: "MyEditor",
-  props: ["user"],
   data() {
     return {
       selectedIndex: 0
@@ -47,41 +45,56 @@ export default {
   computed: {
     memos() {
       return this.$store.state.memos;
+    },
+    user() {
+      return this.$store.state.userData;
     }
   },
   components: {
-    // MyMemo: MyMemo
+    MyMemo: MyMemo
   },
-  watch: {
-    $route(to, from) {
-      console.log("watch route", to, from);
-      this.selectedIndex = (to.params && to.params.memoId) || 0;
-    }
-  },
+  // watch: {
+  // even if this component itself is NOT called by router, this event can be called on router.push()
+  //   $route(to, from) {
+  //     console.log("watch route", to, from);
+  //     this.selectedIndex = (to.params && to.params.memoId) || 0;
+  //   }
+  // },
   beforeRouteUpdate(to, from, next) {
-    // somehow it isn't called on router.push()!
-    console.log("beforeRouteUpdate");
-    // ルート変更に反応する...
-    // next() を呼び出すのを忘れないでください
-    this.selectedIndex = (to.params && to.memoId) || 0;
+    // unless this component itself is called by router, this event isn't called on router.push()!
+    this.selectedIndex = (to.params && to.params.memoId) || 0;
+    console.log("beforeRouteUpdate", this.selectedIndex);
     next();
   },
   created() {
-    firebase
-      .firestore()
-      .collection("memos")
-      .doc(this.user.uid)
-      .get()
-      .then(doc => {
-        if (doc.exists && doc.data().memos) {
-          console.log("get firestroe memos");
-          this.$store.commit("setMemos", doc.data().memos);
-          this.$router.push({
-            name: "memo",
-            params: { memoId: this.selectedIndex }
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        // User is signed in.
+        console.log("User is signed in.");
+        // this.isLogin = true;
+        this.$store.commit("setUserData", user);
+        firebase
+          .firestore()
+          .collection("memos")
+          .doc(this.user.uid)
+          .get()
+          .then(doc => {
+            if (doc.exists && doc.data().memos) {
+              console.log("get firestroe memos");
+              this.$store.commit("setMemos", doc.data().memos);
+              // this.$router.push({
+              //   name: "memo",
+              //   params: { memoId: this.selectedIndex }
+              // });
+            }
           });
-        }
-      });
+      } else {
+        // User is signed out.
+        // this.isLogin = false;
+        // this.$router.push({ name: "home" });
+        // this.$store.commit("setUserData", null);
+      }
+    });
   },
   mounted() {
     document.onkeydown = e => {
@@ -105,6 +118,7 @@ export default {
       this.$router.push({ name: "memo", params: { memoId: index } });
     },
     onClickDeleteBtn() {
+      // todo: set through mutations
       this.memos.splice(this.selectedIndex, 1);
       if (this.selectedIndex > 0) {
         this.$router.push({

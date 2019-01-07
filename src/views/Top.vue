@@ -1,14 +1,10 @@
 <template>
   <div id="top">
-    <MyHome v-if="!isLogin"></MyHome>
-    <MyEditor v-if="isLogin" :user="userData"></MyEditor>
+    <router-view/>
     <router-link :to="{ name: 'terms' }">Terms of Use</router-link>
   </div>
 </template>
 <script>
-import MyHome from "../components/pages/MyHome.vue";
-import MyEditor from "../components/pages/MyEditor.vue";
-
 export default {
   name: "Top",
   data() {
@@ -28,16 +24,15 @@ export default {
         console.log("User is signed in.");
         this.isLogin = true;
         this.$store.commit("setUserData", user);
+        // /memos/1でアクセスするとmemo/0に飛んでしまうので、MyHomeでpush
+        //this.$router.push({ name: "memo", params: { memoId: 0 } });
       } else {
         // User is signed out.
         this.isLogin = false;
+        this.$router.push({ name: "home" });
         this.$store.commit("setUserData", null);
       }
     });
-  },
-  components: {
-    MyHome: MyHome,
-    MyEditor: MyEditor
   }
 };
 </script>
