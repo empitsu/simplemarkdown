@@ -36,14 +36,13 @@
         </v-list>
 
       </div>
-      <MyMemo></MyMemo>
+      <MemoComponent></MemoComponent>
     </div>
   </div>
 </template>
 <script>
-import MyMemo from "./Memo.vue";
+import MemoComponent from "./Memo.vue";
 export default {
-  name: "MyEditor",
   data() {
     return {
       selectedIndex: 0
@@ -58,7 +57,7 @@ export default {
     }
   },
   components: {
-    MyMemo: MyMemo
+    MemoComponent: MemoComponent
   },
   // watch: {
   // even if this component itself is NOT called by router, this event can be called on router.push()

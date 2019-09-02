@@ -6,7 +6,6 @@
 </template>
 <script>
 export default {
-  name: "MyHome",
   data() {
     return {
       msg: "Welcome to simpleMarkdown"

@@ -18,7 +18,6 @@
 import marked from "marked";
 
 export default {
-  name: "MyMemo",
   // props: ["memo"],
   // data() {
   //   return {

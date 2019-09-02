@@ -6,7 +6,6 @@
 </template>
 <script>
 export default {
-  name: "Top",
   data() {
     return {
       isLogin: false
@@ -29,7 +28,7 @@ export default {
       } else {
         // User is signed out.
         this.isLogin = false;
-        this.$router.push({ name: "home" });
+        this.$router.push({ name: "login" });
         this.$store.commit("setUserData", null);
       }
     });

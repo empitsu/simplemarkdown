@@ -1,9 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Top from "./views/Top.vue";
-import MyTerms from "./components/pages/MyTerms.vue";
-import MyEditor from "./components/pages/MyEditor.vue";
-import MyHome from "./components/pages/MyHome.vue";
+import TopComponent from "@/components/pages/top.vue";
+import TermsComponent from "@/components/pages/terms.vue";
+import _memoIdComponent from "@/components/pages/_memoId.vue";
+import LoginComponent from "@/components/pages/login.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -13,17 +13,17 @@ export default new Router({
     {
       path: "/",
       name: "top",
-      component: Top,
+      component: TopComponent,
       children: [
         {
           path: "",
-          name: "home",
-          component: MyHome
+          name: "login",
+          component: LoginComponent
         },
         {
           name: "memo",
           path: "memos/:memoId",
-          component: MyEditor
+          component: _memoIdComponent
         }
       ]
     },
@@ -33,7 +33,7 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: MyTerms
+      component: TermsComponent
     }
   ]
 });
